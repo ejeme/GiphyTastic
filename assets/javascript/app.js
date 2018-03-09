@@ -35,9 +35,9 @@ $(document).ready(function ()
 
     var submit = function () 
     {
-    //When submit button is clicked..........
+    //This adds a new search as a button when submit is clicked
     $('#submit-btn').on('click', function(event){
-        //prevent from the default form/input events from ocurring //""""COME BACK TO THIS
+        //prevent from the default form/input events from ocurring 
         event.preventDefault();
         //Get input text value
         var inputVal = $('#userInput').val();
@@ -56,12 +56,13 @@ $(document).ready(function ()
     var btnVal = $(this).data('type');
     // API Url and key
     var apiKey = 'WO5h5OqOs3Pb0iRpuBjAUQ6KN4uaAQ89';
-    var apiUrl = 'http://api.giphy.com/v1/gifs/search?q='+ btnVal + '&api_key=' + apiKey + '&limit=5';
+    var apiUrl = 'https://api.giphy.com/v1/gifs/search?q='+ btnVal + '&api_key=' + apiKey + '&limit=10';
     $.ajax({
         url: apiUrl,
-        method: "GET"
+        method: 'GET'
       }).done(function(response){
-               // $('.gifImg').empty;
+       
+        $('.gifImg').empty;
                 for (var i = 0; i < 10; i++)
                     {
                         stillImg = response['data'][i]['images']['fixed_height_still']['url'];
