@@ -3,11 +3,13 @@ $(document).ready(function ()
 
     // Global Variables
     //==================================================================================================
-    var topics = ['elephant', 'giraffe', 'hippopotamus', 'lemur', 'zebra', 'rhinoceros', 'green mamba', 'hynena', 'cheetah', 'lion', 'gorilla', 'antelope', 'baboon', 'buffalo', 'crocodile', 'jackal', 'leopard', 'mongoose', 'ostrich', 'monkey', 'wildebeest', 'warthog', 'pangolin', 'serval'];
+    var topics = ['elephant', 'giraffe', 'hippopotamus', 'lemur', 'zebra', 'rhinoceros', 'green mamba', 'hyena', 'cheetah', 'lion', 'gorilla', 'antelope', 'baboon', 'buffalo', 'crocodile', 'jackal', 'leopard', 'mongoose', 'ostrich', 'monkey', 'wildebeest', 'warthog', 'pangolin', 'serval'];
    
     var stillImg = '';
     var animatedImg = '';
-
+    var stillUrl = '';
+    var animatedUrl = '';
+    var gifCondition = '';
     
     // Functions
     //==================================================================================================
@@ -31,7 +33,9 @@ $(document).ready(function ()
             //Add button to DOM
             $('#btn-section').append(newBtn);
         }
-    }      
+    }     
+    
+    
 
     var submit = function () 
     {
@@ -56,23 +60,28 @@ $(document).ready(function ()
     var btnVal = $(this).data('type');
     // API Url and key
     var apiKey = 'WO5h5OqOs3Pb0iRpuBjAUQ6KN4uaAQ89';
-    var apiUrl = 'https://api.giphy.com/v1/gifs/search?q='+ btnVal + '&api_key=' + apiKey + '&limit=10';
+    var apiUrl = 'https://api.giphy.com/v1/gifs/search?q='+ btnVal + '&api_key=' + apiKey + '&limit=20';
     $.ajax({
         url: apiUrl,
         method: 'GET'
       }).done(function(response){
-       
-        $('.gifImg').empty;
-                for (var i = 0; i < 10; i++)
+       //clears image when button is clicked
+        $('.gifImg').empty();
+
+                for (var i = 0; i < 20; i++)
                     {
                         stillImg = response['data'][i]['images']['fixed_height_still']['url'];
-                        animatedImage = response['data'][i]['images']['fixed_height']['url'];
+                        animatedImg = response['data'][i]['images']['fixed_height']['url'];
+                        
                         //Assign image element to newImg variable
+                        
                         var newImg = $('<img>');
+
                         //Give img element stillImg, animated $ src attributes
                         newImg.attr('data-still', stillImg);
                         newImg.attr('data-animate', animatedImg);
                         newImg.attr('src', stillImg);
+                        newImg.attr('data-type', 'still')
                         newImg.addClass('gifImage');
                         //Add new images to the DOM
                         $('.gifImg').append(newImg);
@@ -80,16 +89,16 @@ $(document).ready(function ()
                 //Testing
                 console.log('The button value is = ' + btnVal);
                 console.log('Still Image Url = ' + stillImg);
-                console.log('Animated Image Url = ' + animateImg);
+                console.log('Animated Image Url = ' + animatedImg);
             });
     }
     var gifAnimate = function(){
-        var gifCondition = $(this).data('type');
-        var stillUrl = $(this).data('still');
-        var animateUrl = $(this).data('animate');
+        gifCondition = $(this).data('type');
+        stillUrl = $(this).data('still');
+        animatedUrl = $(this).data('animate');
         if (gifCondition === 'still'){
             //Changes the gif to an animated image by switching the url
-            $(this).attr('src', animateUrl);
+            $(this).attr('src', animatedUrl);
             //Switches the data type to animate
             $(this).data('type', 'animate');
             //Testing
@@ -109,6 +118,7 @@ $(document).ready(function ()
 createBtn();
 submit();
 $(document).on('click', '.gif', displayGif);
+$(document).on('click', '.gifImage', gifAnimate);
 
 });
 
